@@ -33,6 +33,8 @@ class StringRedisTemplateListTest extends BaseRedisTemplateTest {
         assert !result.isEmpty();
         assert stringList.size() == result.size();
 
+        println("TEST");
+
     }
 
     private void printResult(String key, List result){
