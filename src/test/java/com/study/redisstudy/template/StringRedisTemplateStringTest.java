@@ -1,12 +1,11 @@
 package com.study.redisstudy.template;
 
+import com.study.redisstudy.BaseRedisTemplateTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 
-@SpringBootTest
-class StringRedisTemplateStringTest {
+class StringRedisTemplateStringTest extends BaseRedisTemplateTest {
 
     @Autowired
     StringRedisTemplateString stringRedisTemplateString;
@@ -16,11 +15,11 @@ class StringRedisTemplateStringTest {
         String key = "TEST";
         String value = "REDIS TEST";
 
-        boolean addResult = stringRedisTemplateString.addValue(key, value);
-        System.out.println(addResult);
+        boolean addResult = stringRedisTemplateString.addValue(key, value); // 값 입력
+        println(addResult);
 
-        String resultValue = stringRedisTemplateString.getValueByKey(key);
-        System.out.println(resultValue);
+        String resultValue = stringRedisTemplateString.getValueByKey(key); // 값 조회
+        println(resultValue);
 
         assert value.equals(resultValue);
     }
