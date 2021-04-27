@@ -35,4 +35,14 @@ public class StringRedisTemplateList extends StringRedisTemplateFactory<List> {
 
         return true;
     }
+
+    @Override
+    public boolean deleteKey(String key) {
+        long listSize = getStringRedisTemplate().opsForList().size(key);
+        if(listSize > 0){
+            return getStringRedisTemplate().delete(key);
+        }else{
+            return false;
+        }
+    }
 }

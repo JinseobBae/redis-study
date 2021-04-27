@@ -19,5 +19,6 @@ public abstract class StringRedisTemplateFactory<T> {
 
     public abstract boolean addValue(String key, T value);
 
+    public abstract boolean deleteKey(String key);
 }
 

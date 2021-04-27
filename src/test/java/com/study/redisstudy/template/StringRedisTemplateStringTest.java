@@ -21,6 +21,10 @@ class StringRedisTemplateStringTest extends BaseRedisTemplateTest {
         String resultValue = stringRedisTemplateString.getValueByKey(key); // 값 조회
         println(resultValue);
 
+        boolean deleteResult = stringRedisTemplateString.deleteKey(key);
+        println(deleteResult);
+
         assert value.equals(resultValue);
+        assert deleteResult;
     }
 }

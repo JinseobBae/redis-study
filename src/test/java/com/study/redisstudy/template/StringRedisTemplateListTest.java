@@ -29,12 +29,11 @@ class StringRedisTemplateListTest extends BaseRedisTemplateTest {
         List<String> result =  stringRedisTemplateList.getValueByKey(key); // 깂 조회
         printResult(key, result);
 
+        boolean deleteResult = stringRedisTemplateList.deleteKey(key);
 
         assert !result.isEmpty();
         assert stringList.size() == result.size();
-
-        println("TEST");
-
+        assert deleteResult;
     }
 
     private void printResult(String key, List result){

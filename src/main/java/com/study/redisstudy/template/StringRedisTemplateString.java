@@ -32,4 +32,14 @@ public class StringRedisTemplateString extends StringRedisTemplateFactory<String
         }
         return true;
     }
+
+    @Override
+    public boolean deleteKey(String key) {
+        String value = getStringRedisTemplate().opsForValue().get(key);
+        if(value != null){
+            return getStringRedisTemplate().delete(key);
+        }else{
+            return false;
+        }
+    }
 }
