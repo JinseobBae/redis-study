@@ -1,4 +1,4 @@
-package com.study.redisstudy.template;
+package com.study.redisstudy.redistemplate;
 
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;

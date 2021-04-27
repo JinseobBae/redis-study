@@ -1,11 +1,9 @@
-package com.study.redisstudy.template;
+package com.study.redisstudy.redistemplate;
 
 import com.study.redisstudy.BaseRedisTemplateTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;

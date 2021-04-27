@@ -1,4 +1,4 @@
-package com.study.redisstudy.template;
+package com.study.redisstudy.redistemplate;
 
 import com.study.redisstudy.BaseRedisTemplateTest;
 import org.junit.jupiter.api.Test;
