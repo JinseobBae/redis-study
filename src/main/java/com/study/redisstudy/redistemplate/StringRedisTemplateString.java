@@ -7,13 +7,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class StringRedisTemplateString extends StringRedisTemplateFactory<String> {
 
+    private final ValueOperations<String, String> valueOperations;
+
     public StringRedisTemplateString(StringRedisTemplate stringRedisTemplate) {
         super(stringRedisTemplate);
+        valueOperations = getStringRedisTemplate().opsForValue();
     }
 
     @Override
     public String getValueByKey(String key) {
-       ValueOperations<String, String> valueOperations = getStringRedisTemplate().opsForValue();
        String value = valueOperations.get(key);
        return value;
     }
@@ -21,7 +23,6 @@ public class StringRedisTemplateString extends StringRedisTemplateFactory<String
     @Override
     public boolean addValue(String key, String value) {
         try{
-            ValueOperations<String, String> valueOperations = getStringRedisTemplate().opsForValue();
             valueOperations.set(key,value);
         }catch(RuntimeException runtimeException){
             runtimeException.printStackTrace();
@@ -35,7 +36,7 @@ public class StringRedisTemplateString extends StringRedisTemplateFactory<String
 
     @Override
     public boolean deleteKey(String key) {
-        String value = getStringRedisTemplate().opsForValue().get(key);
+        String value = valueOperations.get(key);
         if(value != null){
             return getStringRedisTemplate().delete(key);
         }else{

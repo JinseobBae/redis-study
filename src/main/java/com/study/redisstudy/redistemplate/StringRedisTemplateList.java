@@ -9,13 +9,15 @@ import java.util.List;
 @Service
 public class StringRedisTemplateList extends StringRedisTemplateFactory<List> {
 
+    private final ListOperations listOperations ;
+
     public StringRedisTemplateList(StringRedisTemplate stringRedisTemplate) {
         super(stringRedisTemplate);
+        listOperations = getStringRedisTemplate().opsForList();
     }
 
     @Override
     public List getValueByKey(String key) {
-        ListOperations listOperations = getStringRedisTemplate().opsForList();
         long listSize = listOperations.size(key);
         List resultList = listOperations.range(key,0 , listSize -1);
         return resultList;
@@ -23,7 +25,6 @@ public class StringRedisTemplateList extends StringRedisTemplateFactory<List> {
     @Override
     public boolean addValue(String key, List value) {
         try{
-            ListOperations listOperations = getStringRedisTemplate().opsForList();
             value.stream().forEach( v -> listOperations.rightPush(key, v));
         }catch(RuntimeException runtimeException){
             runtimeException.printStackTrace();
@@ -38,7 +39,7 @@ public class StringRedisTemplateList extends StringRedisTemplateFactory<List> {
 
     @Override
     public boolean deleteKey(String key) {
-        long listSize = getStringRedisTemplate().opsForList().size(key);
+        long listSize = listOperations.size(key);
         if(listSize > 0){
             return getStringRedisTemplate().delete(key);
         }else{

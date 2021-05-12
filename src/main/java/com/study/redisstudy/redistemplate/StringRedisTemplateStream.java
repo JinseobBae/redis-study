@@ -7,7 +7,6 @@ import org.springframework.data.redis.core.StreamOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -17,17 +16,20 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Service
 public class StringRedisTemplateStream extends StringRedisTemplateFactory<List>{
 
-    public StringRedisTemplateStream(StringRedisTemplate stringRedisTemplate) { super(stringRedisTemplate); }
+    private final StreamOperations streamOperations;
+
+    public StringRedisTemplateStream(StringRedisTemplate stringRedisTemplate) {
+        super(stringRedisTemplate);
+        streamOperations = getStringRedisTemplate().opsForStream();
+    }
 
     @Override
     public List getValueByKey(String key) {
-        StreamOperations streamOperations = getStringRedisTemplate().opsForStream();
         return streamOperations.read(String.class, StreamOffset.fromStart(key));
     }
 
     @Override
     public boolean addValue(String key, List value) {
-        StreamOperations streamOperations = getStringRedisTemplate().opsForStream();
         try{
             AtomicInteger index = new AtomicInteger();
             value.stream().forEach( v -> {
@@ -48,7 +50,6 @@ public class StringRedisTemplateStream extends StringRedisTemplateFactory<List>{
 
     @Override
     public boolean deleteKey(String key) {
-        StreamOperations streamOperations = getStringRedisTemplate().opsForStream();
         try{
             List<ObjectRecord> valueList = getValueByKey(key);
             valueList.forEach( v -> streamOperations.delete(v));
