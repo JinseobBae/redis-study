@@ -15,7 +15,6 @@ class StringRedisTemplateListTest extends BaseRedisTemplateTest {
     @Autowired
     StringRedisTemplateList stringRedisTemplateList;
 
-    //https://sabarada.tistory.com/105
 
     @Test
     public void testStringList(){

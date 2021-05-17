@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class StringRedisTemplateList extends StringRedisTemplateFactory<List> {
+public class StringRedisTemplateList extends StringRedisTemplateFactory<List<String>> {
 
-    private final ListOperations listOperations ;
+    private final ListOperations<String, String> listOperations ;
 
     public StringRedisTemplateList(StringRedisTemplate stringRedisTemplate) {
         super(stringRedisTemplate);
@@ -17,13 +17,12 @@ public class StringRedisTemplateList extends StringRedisTemplateFactory<List> {
     }
 
     @Override
-    public List getValueByKey(String key) {
+    public List<String> getValueByKey(String key) {
         long listSize = listOperations.size(key);
-        List resultList = listOperations.range(key,0 , listSize -1);
-        return resultList;
+        return listOperations.range(key,0 , listSize -1);
     }
     @Override
-    public boolean addValue(String key, List value) {
+    public boolean addValue(String key, List<String> value) {
         try{
             value.stream().forEach( v -> listOperations.rightPush(key, v));
         }catch(RuntimeException runtimeException){
