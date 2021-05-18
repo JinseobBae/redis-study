@@ -19,8 +19,7 @@ public class StringRedisTemplateHash extends StringRedisTemplateFactory<HashMap<
 
     @Override
     public HashMap<Object, Object> getValueByKey(String key) {
-        HashMap<Object, Object> result = (HashMap<Object, Object>) operations.entries(key);
-        return result;
+        return (HashMap<Object, Object>) operations.entries(key);
     }
 
     @Override
@@ -31,7 +30,6 @@ public class StringRedisTemplateHash extends StringRedisTemplateFactory<HashMap<
             result = true;
         }catch (Exception e){
             e.printStackTrace();
-            result = false;
         }
         return result;
     }

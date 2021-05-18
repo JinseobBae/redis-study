@@ -14,9 +14,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Redis 5.0 + 부터 가능
  */
 @Service
-public class StringRedisTemplateStream extends StringRedisTemplateFactory<List>{
+public class StringRedisTemplateStream extends StringRedisTemplateFactory<List<ObjectRecord<String, Object>>> {
 
-    private final StreamOperations streamOperations;
+    private final StreamOperations<String, String, Object> streamOperations;
 
     public StringRedisTemplateStream(StringRedisTemplate stringRedisTemplate) {
         super(stringRedisTemplate);
@@ -24,23 +24,14 @@ public class StringRedisTemplateStream extends StringRedisTemplateFactory<List>{
     }
 
     @Override
-    public List getValueByKey(String key) {
-        return streamOperations.read(String.class, StreamOffset.fromStart(key));
+    public List<ObjectRecord<String, Object>> getValueByKey(String key) {
+        return streamOperations.read(Object.class, StreamOffset.fromStart(key));
     }
 
     @Override
-    public boolean addValue(String key, List value) {
+    public boolean addValue(String key, List<ObjectRecord<String, Object>> value) {
         try{
-            AtomicInteger index = new AtomicInteger();
-            value.stream().forEach( v -> {
-                        String id =  String.valueOf(key.length()) + "-" + String.valueOf(index.getAndIncrement());
-                        ObjectRecord<String, Object> objectRecord = StreamRecords.newRecord()
-                                .in(key)
-                                .withId(id)
-                                .ofObject(v);
-                        streamOperations.add(objectRecord);
-                    }
-            );
+            value.stream().forEach(streamOperations::add);
         }catch (Exception e){
             e.printStackTrace();
             return false;
@@ -51,7 +42,7 @@ public class StringRedisTemplateStream extends StringRedisTemplateFactory<List>{
     @Override
     public boolean deleteKey(String key) {
         try{
-            List<ObjectRecord> valueList = getValueByKey(key);
+            List<ObjectRecord<String, Object>> valueList = getValueByKey(key);
             valueList.forEach( v -> streamOperations.delete(v));
         }catch (Exception e){
             e.printStackTrace();

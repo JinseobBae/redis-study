@@ -25,11 +25,8 @@ public class StringRedisTemplateList extends StringRedisTemplateFactory<List<Str
     public boolean addValue(String key, List<String> value) {
         try{
             value.stream().forEach( v -> listOperations.rightPush(key, v));
-        }catch(RuntimeException runtimeException){
-            runtimeException.printStackTrace();
-            return false;
-        }catch(Exception e) {
-            e.printStackTrace();
+        } catch(Exception exception){
+            exception.printStackTrace();
             return false;
         }
 

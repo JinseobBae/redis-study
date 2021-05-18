@@ -3,6 +3,8 @@ package com.study.redisstudy.redistemplate;
 import com.study.redisstudy.BaseRedisTemplateTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.stream.ObjectRecord;
+import org.springframework.data.redis.connection.stream.StreamRecords;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,18 +18,31 @@ class StringRedisTemplateStreamTest extends BaseRedisTemplateTest {
     @Test
     public void testRedisStream(){
         String key = "RSTREAM";
-        List value = new ArrayList();
 
-        value.add("value1");
-        value.add("value2");
-        value.add("value3");
+        List<ObjectRecord<String, Object>> values = new ArrayList<>();
+        int id = 0;
+        ObjectRecord<String, Object> record01 = StreamRecords.newRecord()
+                .in(key)
+                .withId(String.valueOf(++id))
+                .ofObject("VALUE01");
 
-        boolean addResult = stringRedisTemplateStream.addValue(key, value);
+        values.add(record01);
+
+        ObjectRecord<String, Object> record02 = StreamRecords.newRecord()
+                .in(key)
+                .withId(String.valueOf(++id))
+                .ofObject("VALUE02");
+
+        values.add(record02);
+
+        boolean addResult = stringRedisTemplateStream.addValue(key, values);
         assert addResult;
 
         List result = stringRedisTemplateStream.getValueByKey(key);
         result.forEach(System.out::println);
 
-        assert result.size() == value.size();
+        assert values.size() == result.size();
+
+
     }
 }
