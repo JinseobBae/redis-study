@@ -24,5 +24,11 @@ public class FoodRedisRepositoryTest extends BaseRedisRepositoryTest {
         assert searchResult.get().getType().equals("rice");
         assert searchResult.get().getName().equals("friedRice");
         assert searchResult.get().getPrice() == 10000;
+
+        foodRedisRepository.delete(friedRice);
+        Optional<Food> searchResult2 = foodRedisRepository.findById(saveResult.getId());
+
+        assert !searchResult2.isPresent();
+
     }
 }
