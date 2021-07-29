@@ -14,10 +14,10 @@ public class RedisConfig {
 
 
     @Value("${spring.redis.host}")
-    private final String host = "localhost";
+    private String host = "localhost";
 
     @Value("${spring.redis.port}")
-    private final int port = 6379;
+    private int port = 6379;
 
 
     @Bean
