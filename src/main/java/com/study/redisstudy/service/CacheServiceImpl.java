@@ -2,6 +2,7 @@ package com.study.redisstudy.service;
 
 import com.study.redisstudy.entity.Sports;
 import com.study.redisstudy.repository.SportsRepository;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,5 +35,20 @@ public class CacheServiceImpl implements CacheService {
                 })
                 .collect(Collectors.toList());
 
+    }
+
+    @Override
+    @CachePut(value = "select")
+    public HashMap<String, Object> save() {
+        Sports sports = Sports.builder()
+                .type("ball")
+                .name("baseball")
+                .build();
+        Sports result = sportsRepository.save(sports);
+        HashMap<String, Object> resultMap = new HashMap<>();
+
+        resultMap.put("result", result);
+
+        return resultMap;
     }
 }

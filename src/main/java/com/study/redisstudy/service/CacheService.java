@@ -6,4 +6,6 @@ import java.util.List;
 public interface CacheService {
 
     List<HashMap<String,String>> select();
+
+    HashMap<String, Object> save();
 }
