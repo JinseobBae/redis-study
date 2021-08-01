@@ -20,6 +20,8 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
@@ -57,13 +59,24 @@ public class CacheControllerTest {
         String result = mvcResult.getResponse().getContentAsString();
         List<HashMap<String, String>> selectResult = objectMapper.readValue(result, List.class); // controller 조회
 
-        List<Sports> dbResult = sportsRepository.findAll();
+        List<Sports> dbSelect = sportsRepository.findAll();
+
+        List<HashMap<String,String>> dbResult = dbSelect.stream()
+                .map( sports -> {
+                    HashMap<String,String> hashMap = new HashMap<>();
+                    hashMap.put(sports.getName(), sports.getType());
+                    return hashMap;
+                })
+                .collect(Collectors.toList());
+
 
         assert selectResult.size() == dbResult.size();
 
-
-
-
-
+        for(int i = 0; i < selectResult.size(); i++){
+            Set<String> keySet = selectResult.get(i).keySet();
+            for(String key : keySet){
+                assert selectResult.get(i).get(key).equals(dbResult.get(i).get(key));
+            }
+        }
     }
 }
