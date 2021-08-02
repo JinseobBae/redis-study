@@ -30,4 +30,10 @@ public class CacheController {
         HashMap<String, Object> result = cacheService.save();
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    @DeleteMapping("del/{id}")
+    ResponseEntity<Object> delete(@PathVariable("id") Long id){
+        HashMap<String,String> result = cacheService.delete(id);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 }
