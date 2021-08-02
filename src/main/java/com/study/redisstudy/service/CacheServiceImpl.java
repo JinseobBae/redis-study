@@ -22,8 +22,8 @@ public class CacheServiceImpl implements CacheService {
 
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = "select")
-    public List<HashMap<String, String>> select() {
+    @Cacheable(value = "select", key = "#id")
+    public List<HashMap<String, String>> select(Long id) {
 
         List<Sports> result = sportsRepository.findAll();
 

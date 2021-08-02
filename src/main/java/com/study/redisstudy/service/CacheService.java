@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface CacheService {
 
-    List<HashMap<String,String>> select();
+    List<HashMap<String,String>> select(Long id);
 
     HashMap<String, Object> save();
 }

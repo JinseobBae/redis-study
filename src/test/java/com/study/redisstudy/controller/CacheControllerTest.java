@@ -49,7 +49,7 @@ public class CacheControllerTest {
 
     @Test
     void cacheTest() throws Exception {
-        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/cache/select")
+        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/cache/select/1")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE);
 

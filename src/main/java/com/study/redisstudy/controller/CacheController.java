@@ -19,9 +19,9 @@ public class CacheController {
     }
 
 
-    @GetMapping("select")
-    ResponseEntity<Object> selectCache(){
-        List<HashMap<String, String>> result = cacheService.select();
+    @GetMapping("select/{id}")
+    ResponseEntity<Object> selectCache(@PathVariable("id") Long id){
+        List<HashMap<String, String>> result = cacheService.select(id);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
